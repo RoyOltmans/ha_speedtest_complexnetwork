@@ -4,6 +4,8 @@
 
 ## Overview
 
+This setup relies on the official Speedtest CLI tool; for detailed usage and advanced options, refer to its manual page (`man speedtest`) or the [official Speedtest CLI documentation](https://www.speedtest.net/apps/cli).
+
 Instead of a custom component, this approach uses Home Assistant's built-in `command_line` sensor to run a Bash script (`hass_speedtest.sh`) that executes Speedtest CLI, caches JSON output, and then leverages template sensors to extract individual metrics (download, upload, ping, packet loss, host info).
 
 ## Files
@@ -256,5 +258,4 @@ cards:
 * **Permission denied**: Adjust file ownership or permissions so Home Assistant can execute the script.
 * **Test failures or timeouts**: Increase the timeout in `hass_speedtest.sh` or lengthen `scan_interval`.
 
-```
 ```
