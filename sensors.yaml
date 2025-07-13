@@ -1,0 +1,21 @@
+  - platform: template
+    sensors:
+      speedtest_host_server:
+        value_template: >-
+          {{ state_attr('sensor.speedtest_host','server').name }} - {{ state_attr('sensor.speedtest_host','server').location }}
+      speedtest_host_idle_latency:
+        value_template: >-
+          {{ state_attr('sensor.speedtest_host','ping').latency | round(2) }}
+        unit_of_measurement: "ms"
+      speedtest_host_download:
+        value_template: >-
+          {{ (state_attr('sensor.speedtest_host','download').bandwidth * 8 / 1e6) | round(2) }}
+        unit_of_measurement: "Mbps"
+      speedtest_host_upload:
+        value_template: >-
+          {{ (state_attr('sensor.speedtest_host','upload').bandwidth * 8 / 1e6) | round(2) }}
+        unit_of_measurement: "Mbps"
+      speedtest_host_packet_loss:
+        value_template: >-
+          {{ state_attr('sensor.speedtest_host','packetLoss') | default(0) }}
+        unit_of_measurement: "%"
