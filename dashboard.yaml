@@ -1,0 +1,79 @@
+title: Speedtest
+path: speedtest
+icon: mdi:speedometer
+cards:
+  - type: vertical-stack
+    cards:
+      - type: picture
+        image: /local/assets/images/brands/speedtest.png
+      - type: markdown
+        content: >-
+          <ha-icon icon="mdi:server-network"></ha-icon> **ISP - Server:** {{
+          state_attr('sensor.speedtest_host','server').name }} – {{
+          state_attr('sensor.speedtest_host','server').location }}  
+
+          <ha-icon icon="mdi:timer"></ha-icon> **Idle Latency:** {{
+          states('sensor.speedtest_host_idle_latency') }} ms  
+
+          <ha-icon icon="mdi:chart-bell-curve"></ha-icon> **Packet Loss:** {{
+          states('sensor.speedtest_host_packet_loss') }} %  
+        text_only: true
+      - cards:
+          - cards:
+              - color_thresholds:
+                  - color: red
+                    value: 0
+                  - color: yellow
+                    value: 1500
+                  - color: green
+                    value: 1800
+                entities:
+                  - sensor.speedtest_host_download
+                font_size: 70
+                height: 70
+                hours_to_show: 24
+                icon: mdi:download
+                line_width: 2
+                name: Download
+                points_per_hour: 1
+                show:
+                  extrema: true
+                  fill: true
+                type: custom:mini-graph-card
+              - color_thresholds:
+                  - color: red
+                    value: 0
+                  - color: yellow
+                    value: 600
+                  - color: green
+                    value: 800
+                entities:
+                  - sensor.speedtest_host_upload
+                font_size: 70
+                height: 70
+                hours_to_show: 24
+                icon: mdi:upload
+                line_width: 2
+                name: Upload
+                points_per_hour: 1
+                show:
+                  extrema: true
+                  fill: true
+                type: custom:mini-graph-card
+            type: horizontal-stack
+        type: vertical-stack
+        view_layout:
+          width: 10
+          max_cols: 10
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.speedtest_host_download
+            name: Download
+            stroke_width: 2
+          - entity: sensor.speedtest_host_upload
+            name: Upload
+            stroke_width: 2
