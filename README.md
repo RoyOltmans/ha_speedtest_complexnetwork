@@ -1,4 +1,3 @@
-````markdown
 # HA SpeedTest (Command-Line Version)
 
 > **Warning:** This setup is intended for advanced or complex network environments. Ensure you have the Speedtest CLI installed, a valid custom server ID, and correct script permissions before proceeding.
