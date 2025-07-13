@@ -70,10 +70,11 @@ sudo dnf install speedtest.rpm
 
    ```yaml
    - platform: command_line
-     name: speedtest_host
-     command: "/config/scripts/hass_speedtest.sh"
-     scan_interval: 3600      # seconds between tests (adjust as needed)
-     value_template: "{{ value_json.timestamp }}"
+     name: Speedtest host
+     scan_interval:
+       minutes: 60
+     command: cat /config/.last_speedtest.json
+     value_template: "{{ value_json.isp }}"
      json_attributes:
        - server
        - ping
@@ -81,6 +82,32 @@ sudo dnf install speedtest.rpm
        - upload
        - packetLoss
    ```
+
+   This sensor reads the JSON cache output written by your speedtest script. To schedule it automatically, add a cron job:
+
+3. **Open your crontab** (runs as the Home Assistant user):
+
+   ```bash
+   # If Home Assistant runs as 'homeassistant' user:
+   sudo crontab -u homeassistant -e
+   # Otherwise, for your current user:
+   crontab -e
+   ```
+
+4. **Add the following line** at the end of the file:
+
+   ```cron
+   */60 * * * * /opt/home-assistant/hass_speedtest.sh >/dev/null 2>&1
+   ```
+
+5. **Save and exit** your editor (e.g., `Ctrl+O`, `Enter`, `Ctrl+X` in nano).
+
+Now cron will run the script every hour and update `/config/.last_speedtest.json`.
+
+```bash
+   # Run every hour
+   */60 * * * * /opt/home-assistant/hass_speedtest.sh >/dev/null 2>&1
+```
 
 3. **Place your `sensors.yaml`**
    Use the provided `sensors.yaml` (adjust paths or names if required):
