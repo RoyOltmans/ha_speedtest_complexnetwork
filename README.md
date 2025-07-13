@@ -119,6 +119,26 @@ sudo dnf install speedtest.rpm
 
 ## Configuration Notes
 
+### Cache File Location
+
+The script writes its JSON output cache to the path defined by the `CACHE` variable in `hass_speedtest.sh`. By default this example uses:
+
+```bash
+CACHE="/opt/home-assistant/.last_speedtest.json"
+```
+
+Adjust this path to match your Home Assistant installation type:
+
+* **Home Assistant OS / Container**: `/config/.last_speedtest.json`
+* **Supervised / Hass.io on Raspbian**: `/usr/share/hassio/homeassistant/.last_speedtest.json`
+* **Python virtualenv / pip install**: `/home/homeassistant/.homeassistant/.last_speedtest.json`
+* **Debian package (`apt install homeassistant`)**: `/opt/homeassistant/.last_speedtest.json`
+* **Hassbian image**: `/home/homeassistant/.homeassistant/.last_speedtest.json`
+
+Make sure the directory exists and is writable by the user running Home Assistant.
+
+## Configuration Notes
+
 * **Script path**: If you place `hass_speedtest.sh` elsewhere, update the `command` path accordingly.
 * **Speedtest CLI**: Must be installed and accessible at the path defined in `hass_speedtest.sh`.
 * **Server ID**: The default server ID (`61186`) lives in the script—modify it to use a different Speedtest server.
