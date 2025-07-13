@@ -168,6 +168,88 @@ entities:
   - sensor.speedtest_host_packet_loss
 ```
 
+## Dashboard Configuration
+
+Use the snippet below as your `dashboard.yaml`. It can be pasted directly into the YAML editor for your Speedtest view:
+
+```yaml
+title: Speedtest
+path: speedtest
+icon: mdi:speedometer
+cards:
+  - type: vertical-stack
+    cards:
+      - type: picture
+        image: /local/assets/images/brands/speedtest.png
+      - type: markdown
+        content: >-
+          <ha-icon icon="mdi:server-network"></ha-icon> **ISP - Server:** {{ state_attr('sensor.speedtest_host','server').name }} – {{ state_attr('sensor.speedtest_host','server').location }}
+
+          <ha-icon icon="mdi:timer"></ha-icon> **Idle Latency:** {{ states('sensor.speedtest_host_idle_latency') }} ms
+
+          <ha-icon icon="mdi:chart-bell-curve"></ha-icon> **Packet Loss:** {{ states('sensor.speedtest_host_packet_loss') }} %
+        text_only: true
+      - type: vertical-stack
+        view_layout:
+          width: 10
+          max_cols: 10
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: custom:mini-graph-card
+                name: Download
+                icon: mdi:download
+                entities:
+                  - sensor.speedtest_host_download
+                hours_to_show: 24
+                points_per_hour: 1
+                line_width: 2
+                font_size: 70
+                height: 70
+                show:
+                  fill: true
+                  extrema: true
+                color_thresholds:
+                  - value: 0
+                    color: red
+                  - value: 1500
+                    color: yellow
+                  - value: 1800
+                    color: green
+              - type: custom:mini-graph-card
+                name: Upload
+                icon: mdi:upload
+                entities:
+                  - sensor.speedtest_host_upload
+                hours_to_show: 24
+                points_per_hour: 1
+                line_width: 2
+                font_size: 70
+                height: 70
+                show:
+                  fill: true
+                  extrema: true
+                color_thresholds:
+                  - value: 0
+                    color: red
+                  - value: 600
+                    color: yellow
+                  - value: 800
+                    color: green
+      - type: custom:apexcharts-card
+        header:
+          show: true
+          show_states: true
+          colorize_states: true
+        series:
+          - entity: sensor.speedtest_host_download
+            name: Download
+            stroke_width: 2
+          - entity: sensor.speedtest_host_upload
+            name: Upload
+            stroke_width: 2
+```
+
 ## Troubleshooting
 
 * **No data**: Check the script path, executable bits, and that Speedtest CLI runs manually without errors.
