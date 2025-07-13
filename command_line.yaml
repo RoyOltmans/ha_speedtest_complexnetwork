@@ -1,0 +1,12 @@
+  - sensor:
+        name: Speedtest host
+        scan_interval:
+            minutes: 60
+        command: cat /config/.last_speedtest.json
+        value_template: "{{ value_json.isp }}"
+        json_attributes:
+            - server
+            - ping
+            - download
+            - upload
+            - packetLoss
